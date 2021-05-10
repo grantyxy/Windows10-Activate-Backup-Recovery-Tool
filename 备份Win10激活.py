@@ -16,13 +16,14 @@ def copy_activate_folder():
     return dest
 
 
-def get_current_key():
+def key_to_file():
+    global key
     registry = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
                               "SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform")
     key_info_number = winreg.QueryInfoKey(registry)[1]
     for x in range(key_info_number):
         if winreg.EnumValue(registry, x)[0] == "BackupProductKeyDefault":
-            key =  winreg.EnumValue(registry, x)[1]
+            key = winreg.EnumValue(registry, x)[1]
             break
     with open("key.txt", "w") as f:
         f.write(key)
@@ -38,3 +39,6 @@ def compress_file(activate_folder: str, key_file: str):
     shutil.rmtree(activate_folder)
     os.remove(key_file)
 
+
+def file_to_key(activation_backup_name):
+    pass
