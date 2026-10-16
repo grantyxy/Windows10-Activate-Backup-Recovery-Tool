@@ -1,0 +1,30 @@
+name: Windows checks and portable build
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test-and-build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Lint
+        run: python -m ruff check .
+      - name: Test archive, recovery and PyQt6 UI
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: python -m unittest discover -v
+      - name: Build portable desktop app
+        run: python -m PyInstaller --noconfirm WindowsActivationBackup.spec
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WindowsActivationBackup-windows-x64
+          path: dist/WindowsActivationBackup/

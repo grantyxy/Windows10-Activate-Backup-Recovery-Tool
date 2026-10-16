@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "windows-activation-backup"
+version = "1.0.0"
+description = "Windows 11 activation backup and recovery assistant with PyQt6"
+requires-python = ">=3.11"
+license = "GPL-3.0-only"
+dependencies = ["PyQt6==6.10.2", "cryptography==49.0.0"]
+
+[project.gui-scripts]
+windows-activation-backup = "activation_backup.bootstrap:launch"
+
+[tool.setuptools.packages.find]
+include = ["activation_backup*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]
